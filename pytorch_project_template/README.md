@@ -4,6 +4,8 @@ Simple machine learning project template based on PyTorch.
 
 If you are impatient just jump to the tutorial at the end of this README.
 
+A small warning is due. This has been rewritten recently to remove the dependency on PyToune. It might include some bugs.
+
 ## Introduction
 
 The main goal of this template is to make easy following the state-of-the-art good practices for a machine learning project. This includes reducing boilerplate, or keeping config handling simple and consistent.
@@ -11,7 +13,6 @@ The main goal of this template is to make easy following the state-of-the-art go
 First, this template includes a minimal trainer ``bin/train.py`` that has:
 
 * A gorgeous training loop (generic training script, checkpointing, callbacks, etc.)
-    - We use Poutyne (only in src.training_loop). Can be swapped for something else.
 * Beautiful config handling
     - We use gin for this
 * Amazing automatic saving of logs and other auxiliary files
@@ -54,7 +55,7 @@ Do you have other ideas? Please open an issue and let's discuss. Here are ours:
 
     - See `results/example_run` folder for example files that are produced.
 
-* Each experiment should be as self-contained as possible, e.g. include runner, plotting utilities, etc. 
+* Each experiment should be as self-contained as possible, e.g. include runner, plotting utilities, a README file, etc. 
 
     - See `experiments/tune_lr` for an example. 
     
@@ -75,7 +76,7 @@ Take the following steps:
 
 4. Run ``tensorboard --logdir=save_to_folder`` to visualize the learning curves.
 
-Configuration is done using gin. This allows for a flexible configuration of training. For instance, to continue training for more epochs you can run: ``bin/train.py save_to_folder configs/cnn.gin -b="training_loop.n_epochs=5;training_loop.reload=True"``.
+Configuration is done using gin. This allows for a flexible configuration of training. For instance, to continue training for more epochs you can run: ``bin/train.py save_to_folder configs/cnn.gin -b="training_loop.n_epochs=5#training_loop.reload=True"``.
 
 Note: training won't reach sensible accuracies. This is on purpose so that the demonstration works on small machines. For a bit more realistic training configuration see `configs/cnn_full.gin`.
 
@@ -93,8 +94,7 @@ We ship an example experiment, where we tune LR for the small CNN on Cifar10. He
 
 4. See runs: `ls $RESULTS_DIR/tune_lr/large`
 
-5. Process experiment results: `python experiments/tune_lr/main.py report`. Bonus for OSX users: To enable plotting in iterm install ``pip install itermplot``, and uncomment the appropriate line in ``e.sh```.
-
+    5. Process experiment results: `python experiments/tune_lr/main.py report`. Bonus for OSX users: To enable plotting in iterm install ``pip install itermplot``, and uncomment the appropriate line in ``e.sh```.
 
 6. Take a look at the main.py source code to understand better the logic.
 

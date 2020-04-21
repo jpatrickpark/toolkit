@@ -96,16 +96,17 @@ def replace_standard_stream(stream_name, file_):
 def gin_wrap(fnc):
     def main(save_path, config, bindings=""):
         # You can pass many configs (think of them as mixins), and many bindings. Both ";" separated.
-        print(config.split(";"))
-        gin.parse_config_files_and_bindings(config.split(";"), bindings.replace(";", "\n"))
-        print(_OPERATIVE_CONFIG)
+        gin.parse_config_files_and_bindings(config.split("#"), bindings.replace("#", "\n"))
         if not os.path.exists(save_path):
             logger.info("Creating folder " + save_path)
             os.system("mkdir -p " + save_path)
-        run_with_redirection(os.path.join(save_path, "stdout_my.txt"),
-                             os.path.join(save_path, "stderr_my.txt"),
-                             fnc(save_path))
+
+        run_with_redirection(os.path.join(save_path, "stdout.txt"),
+                             os.path.join(save_path, "stderr.txt"),
+                             fnc)(save_path)
+
     argh.dispatch_command(main)
+
 
 def run_with_redirection(stdout_path, stderr_path, func):
     def func_wrapper(*args, **kwargs):
